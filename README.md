@@ -4,7 +4,8 @@ Basit bir admin panel yazmak artık bir kaç dakika sürüyor.
 Mesela üyeler tablomuz var bununla ilgili admin panel yazmak istiyoruz
 Sınıfımızı çağırarak işlemimize başlayalım
 
-//DEFAULT SETTINGS
+```
+#DEFAULT SETTINGS
 $admin= new admin;#DEFAULT
 $admin->from="members";#DEFAULT
 $admin->where="`id`='".$_GET["id"]."'";#DEFAULT
@@ -20,7 +21,7 @@ if(isset($_GET['do']) AND $_GET['do']=="edit") {print_r($admin->update());} #<!-
 if(isset($_POST['submit']) AND $_POST['submit'] == "update"){$admin->updateQuery();}#<!--UPDATE QUERY -->
 if(isset($_GET['do']) AND $_GET['do']=="add") {print_r($admin->insert());}#<!--INSERT SHOW-->
 if(isset($_POST['submit']) AND $_POST['submit'] == "insert") {$admin->insertQuery();}#<!--INSERT QUERY -->
-
+```
 
 **PHP OOP Türkçe CRUD DashBoard for AJAX Datatables Class**
 
