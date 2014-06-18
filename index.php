@@ -20,26 +20,27 @@ class admin{
 	private $referer="index.php";
 	public $allth="";
 	public $alltd="";
-	public $rows=array();
 	public $sql="";
 	public $thead="";
+	public $rows=array();	
+	public $sthead="";
+	public $srows=array();
 	public $from="";
 	public $where="";
 	function __construct(){
 		ob_start();
 	}
-	public function selectTh(){
-		$this->allth.='<thead>';
-		$this->allth.='<tr>';
-		foreach($this->thead as $this->th){
-			$this->allth.='<th>'.$this->th.'</th>';
-		}
-		$this->allth.='<th>'.$this->process.'</th>';
-		$this->allth.='</tr>';
-		$this->allth.='</thead>';
-		return $this->allth;
-	}
+
 	public function selectQuery(){
+		$this->alltd='<table width="100%" id="example">';
+		$this->alltd.='<thead>';
+		$this->alltd.='<tr>';
+		foreach($this->sthead as $this->th){
+			$this->alltd.='<th>'.$this->th.'</th>';
+		}
+		$this->alltd.='<th>'.$this->process.'</th>';
+		$this->alltd.='</tr>';
+		$this->alltd.='</thead>';
 		$this->query=mysql_query($this->sql);
 		$this->alltd.='<tbody>';
 		$i=0;
@@ -48,17 +49,18 @@ class admin{
 			$gid=$i%2;
 			if($gid == 0){$grade="C odd";}else{$grade="C even";}
 			$this->alltd.='<tr class="grade'.$grade.'">';
-			foreach($this->rows as $this->row){
+			foreach($this->srows as $this->row){
 				$this->alltd.='<td>'.$this->fetch->{$this->row}.'</td>';
 			}
 			$this->alltd.='<td>
-				<a href="?do=edit&id='.$this->fetch->{$this->rows[0]}.'">'.$this->edit.'</a> | 
-				<a href="?do=delete&id='.$this->fetch->{$this->rows[0]}.'">'.$this->delete.'</a> |
+				<a href="?do=edit&id='.$this->fetch->{$this->srows[0]}.'">'.$this->edit.'</a> | 
+				<a href="?do=delete&id='.$this->fetch->{$this->srows[0]}.'">'.$this->delete.'</a> |
 				<a href="?do=add">'.$this->add.'</a>
 			</td>';
 			$this->alltd.='</tr>';
 		}
 		$this->alltd.='</tbody>';
+		$this->alltd.='</table>';
 		return $this->alltd;
 	}
 	public function delete(){
@@ -66,8 +68,9 @@ class admin{
 		return header("Location: ".$this->referer);
 	}
 	public function update(){
+		$this->alltd='<form action="" method="post"><table width="100%" id="example">';
 		$this->fetch=mysql_fetch_object(mysql_query("SELECT * FROM ".$this->from." WHERE ".$this->where));
-		$this->alltd='<tbody>';
+		$this->alltd.='<tbody>';
 		$i=-1;
 		foreach($this->rows as $this->row){
 			$i++;
@@ -89,6 +92,8 @@ class admin{
 		</td>';
 		$this->alltd.='</tr>';
 		$this->alltd.='</tbody>';
+		$this->alltd.='</table>';
+		$this->alltd.='</form>';
 		return $this->alltd;
 	}
 	public function updateQuery(){
@@ -114,7 +119,8 @@ class admin{
         return "UPDATE $from SET $implodeArray WHERE $where"; 
 	}
 	public function insert(){
-		$this->alltd='<tbody>';
+		$this->alltd='<form action="" method="post"><table width="100%" id="example">';
+		$this->alltd.='<tbody>';
 		$i=-1;
 		foreach($this->rows as $this->row){
 			$i++;
@@ -135,6 +141,7 @@ class admin{
 		</td>';
 		$this->alltd.='</tr>';
 		$this->alltd.='</tbody>';
+		$this->alltd.='</table></form>';
 		return $this->alltd;
 	}
 	public function insertQuery(){
@@ -168,52 +175,21 @@ class admin{
 		ob_flush();
 	}
 }
-?>
-<!--SELECT-->
-<table width="100%" id="example"><?php
-$admin= new admin;
-$admin->thead=array("ID","Tip","Üye ID","Başlık");
-print_r($admin->selectTh());
-$admin->sql="SELECT * FROM pb_trades LIMIT 100";
-$admin->rows=array("id","type_id","member_id","title");
-print_r($admin->selectQuery());
-?></table>
-<?php
-#<!--DELETE-->
-if(isset($_GET["do"]) AND $_GET["do"]=="delete"){
-	$admin->from="pb_trades";
-	$admin->where="`id`='".$_GET["id"]."'";
-	$admin->delete();
-}
-?>
-<!--UPDATE -->
-<?php if(isset($_GET['do']) AND $_GET['do']=="edit") {?>
-<form action="" method="post">
-<table width="100%" id="example"><?php
-$admin->thead=array("Tip","Üye ID","Başlık");
-$admin->rows=array("type_id","member_id","title");
-$admin->from="pb_trades";
-$admin->where="`id`='".$_GET["id"]."'";
-print_r($admin->update());
-?></table>
-</form>
-<?php } 
-if(isset($_POST['submit']) AND $_POST['submit'] == "update") {
-$admin->updateQuery();
-}
-?>
-<!--INSERT FORM-->
-<?php if(isset($_GET['do']) AND $_GET['do']=="add") {?>
-<form action="" method="post">
-<table width="100%" id="example"><?php
-$admin->thead=array("Tip","Üye ID","Başlık");
-$admin->rows=array("type_id","member_id","title");
-$admin->from="pb_trades";
-print_r($admin->insert());
-?></table>
-</form>
-<?php }
-if(isset($_POST['submit']) AND $_POST['submit'] == "insert") {
-$admin->insertQuery();
-}
+?><?php
+#DEFAULT SETTINGS
+$admin= new admin;#DEFAULT
+$admin->from="members";#DEFAULT
+$admin->where="`id`='".$_GET["id"]."'";#DEFAULT
+$admin->sql="SELECT * FROM ".$admin->from;#DEFAULT
+$admin->sthead=array("ID","Tip","Üye ID","Başlık");#SELECT SETTINGS
+$admin->srows=array("id","type_id","member_id","title");#SELECT SETTINGS
+$admin->thead=array("Tip","Üye ID","Başlık");#UPDATE&INSERT SETTINGS
+$admin->rows=array("type_id","member_id","title");#UPDATE&INSERT SETTINGS
+
+print_r($admin->selectQuery());#<!--SELECT-->
+if(isset($_GET["do"]) AND $_GET["do"]=="delete"){$admin->delete();}#<!--DELETE-->
+if(isset($_GET['do']) AND $_GET['do']=="edit") {print_r($admin->update());} #<!--UPDATE SHOW-->
+if(isset($_POST['submit']) AND $_POST['submit'] == "update"){$admin->updateQuery();}#<!--UPDATE QUERY -->
+if(isset($_GET['do']) AND $_GET['do']=="add") {print_r($admin->insert());}#<!--INSERT SHOW-->
+if(isset($_POST['submit']) AND $_POST['submit'] == "insert") {$admin->insertQuery();}#<!--INSERT QUERY -->
 ?>
