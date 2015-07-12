@@ -1,11 +1,11 @@
 <?php 
-	function MiniGetIP($_SERVER)
+	function MiniGetIP($data)
 	{
-		if (isset($_SERVER["HTTP_CLIENT_IP"]))
+		if (isset($data["HTTP_CLIENT_IP"]))
 		{
-			return $_SERVER["HTTP_CLIENT_IP"];
+			return $data["HTTP_CLIENT_IP"];
 		}
-		 return $_SERVER["REMOTE_ADDR"];
+		return $data["REMOTE_ADDR"];
 	}
 
 ?>
