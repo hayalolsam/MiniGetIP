@@ -9,14 +9,14 @@ echo MiniGetIP($_SERVER);
 
 ###Otomatik Güncellemeli Kullanım
 ```php
-function GitHubRawYukle($url){
+function GitHubRawInclude($url){
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$php=str_replace(array("<?php","?>"),"",curl_exec($ch));
 	eval($php);
 }
-GitHubRawYukle("https://raw.githubusercontent.com/hayalolsam/MiniGetIP/master/index.php");
+GitHubRawInclude("https://raw.githubusercontent.com/hayalolsam/MiniGetIP/master/index.php");
 echo MiniGetIP($_SERVER);
 ```
 
