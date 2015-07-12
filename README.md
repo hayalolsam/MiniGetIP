@@ -2,13 +2,13 @@
 
 Bazı hostinglerdeki user_ip ve server_ip'lerin karışması sebebiyle oluşturulmuş basit bir ip alma düzeneğidir.
 
-Basit Kullanım
-```
+###Basit Kullanım
+```php
 echo MiniGetIP($_SERVER);
 ```
 
-Otomatik Güncellemeli Kullanım
-```
+###Otomatik Güncellemeli Kullanım
+```php
 function GitHubRawYukle($url){
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
