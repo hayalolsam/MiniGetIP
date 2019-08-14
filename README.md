@@ -22,6 +22,6 @@ echo MiniGetIP($_SERVER);
 
 
 Detaylı bilgi için 
-www.phpstate.com
+www.ulusanyazilim.com
 ulusanyazilim@gmail.com
 
