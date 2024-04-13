@@ -22,6 +22,6 @@ echo MiniGetIP($_SERVER);
 
 
 Detaylı bilgi için 
-www.ulusanyazilim.com
-ulusanyazilim@gmail.com
+www.hucrem.com
+teknosenator@gmail.com
 
